@@ -42,6 +42,10 @@ client1.on("data", function (data) {
 	if (data.toString().includes("Commit")) {
 		serverCommit = splitArr(removeKeyword(data, "Commit: "));
 
+		console.log("====================================");
+		console.log("6) Server commit", serverCommit);
+		console.log("====================================");
+
 		// 7) Sends r to server
 		client1.write("Random: " + r);
 	}
@@ -50,8 +54,21 @@ client1.on("data", function (data) {
 	if (data.toString().includes("Random")) {
 		serverRandom = data.toString().replace("Random: ", "");
 
+		console.log("====================================");
+		console.log("10) Server random", serverRandom);
+		console.log("====================================");
+
 		// 11) Sends message to server
-		client1.write("Message: ", clientMessage);
+		client1.write("Message: " + clientMessage);
+	}
+
+	// 14) Receives server message
+	if (data.toString().includes("Message")) {
+		serverMessage = data.toString().replace("Message: ", "");
+
+		console.log("====================================");
+		console.log("14) Server message", serverMessage);
+		console.log("====================================");
 	}
 });
 

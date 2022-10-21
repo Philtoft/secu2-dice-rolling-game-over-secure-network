@@ -36,8 +36,6 @@ function onClientConnection(sock) {
 	console.log(`${sock.remoteAddress}:${sock.remotePort} Connected`);
 
 	sock.on("data", function (data) {
-		let diceRoll = rollDice();
-
 		// 2) Server receives commit message
 		if (data.toString().includes("Commit")) {
 			clientCommit = splitArr(removeKeyword(data, "Commit: "));
@@ -47,7 +45,13 @@ function onClientConnection(sock) {
 			console.log("3) Client Commit", clientCommit);
 			console.log("====================================");
 
-			serverCommit = pedersen.commit(diceRoll, s, r);
+			// 4)
+			serverMessage = rollDice();
+			serverCommit = pedersen.commit(serverMessage, s, r);
+
+			console.log("====================================");
+			console.log("4) Commit", serverCommit);
+			console.log("====================================");
 
 			// 5) Sends commit message to client
 			sock.write("Commit: " + serverCommit.toString());
@@ -58,21 +62,23 @@ function onClientConnection(sock) {
 			clientRandom = data.toString().replace("Random: ", "");
 
 			console.log("====================================");
-			console.log("Client Random: ", clientRandom);
+			console.log("8) Client Random: ", clientRandom);
 			console.log("====================================");
 
 			// 9) sends random value r
 			sock.write("Random: " + r);
 		}
 
+		// 12) Receives message from client
 		if (data.toString().includes("Message: ")) {
 			clientMessage = data.toString().replace("Message: ", "");
 
 			console.log("====================================");
-			console.log("Client message", clientMessage);
+			console.log("12) Client message", clientMessage);
 			console.log("====================================");
 
-			sock.write("Message: ", serverMessage);
+			// 13) send m' to client
+			sock.write("Message: " + serverMessage);
 		}
 	});
 }
