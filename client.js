@@ -1,50 +1,47 @@
 const net = require("net");
+const { splitArr, removeKeyword } = require("./pedersen.js");
 const Pedersen = require("./pedersen.js");
 require("dotenv").config();
-var pedersen = require("./pedersen.js");
 
 const port = 8888;
 
 const client1 = new net.Socket();
 
-// generates weird outout...
-let p = process.env.P;
-let g = process.env.G;
-let r = "e93c58e6f7f3f4b6f6f0e55f3a4191b87d58b7b1";
-let secret = "1184c47884aeead9816654a63d4209d6e8e906e29";
+const p = process.env.P;
+const g = process.env.G;
+const s = process.env.SECRET;
+const r = "e93c58e6f7f3f4b6f6f0e55f3a4191b87d58b7b1";
+const pedersen = new Pedersen(p, g);
 
 /**
  * Process:
  *
  * 1) Roll dice. Send commitment to server. Send key
  */
+let serverCommit;
 
 client1.connect(port, function () {
-	// Step 1
+	// 1) Creates random dice roll
 	let diceRoll = rollDice();
 
-	// 2)
-	const pedersen = new Pedersen(p, g);
+	// 2) sends a commit message
 
 	console.log("====================================");
-	console.log("1) Commit", pedersen.commit(diceRoll, secret, r).toString());
+	console.log("2) Commit", pedersen.commit(diceRoll, s, r).toString());
 	console.log("====================================");
 
-	// client1.write(diceRoll);
+	let commit = pedersen.commit(diceRoll, s, r);
+
+	client1.write("Commit:" + commit.toString());
 });
 
 client1.on("data", function (data) {
-	// console.log("====================================");
-	// console.log(data.toString());
-	// console.log("====================================");
-
-	let key;
-
 	if (data.toString().includes("Commit")) {
+		serverCommit = splitArr(removeKeyword(data, "Commit: "));
+
 		console.log("====================================");
-		console.log("Commit: " + data);
+		console.log("6) Server Commit", serverCommit);
 		console.log("====================================");
-		client1.write("Key: " + Math.floor(Math.random() * 10001));
 	}
 
 	if (data.toString().includes("Key")) {

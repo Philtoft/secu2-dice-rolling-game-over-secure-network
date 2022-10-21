@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const bigInt = require("big-integer");
+const { stringToArray } = require("ag-grid-community");
 const bitSecurity = 32;
 
 // Jeg skal kun bruge commitTo og verify
@@ -87,6 +88,18 @@ class Pedersen {
 		const c = this.commit(message.toString(16), secret, r);
 
 		return c.toString() === commitment.toString();
+	}
+
+	static splitArr(arrayMessage) {
+		return arrayMessage.toString().split(",");
+	}
+
+	static removeKeyword(message, keyword, replace = "") {
+		return message.toString().replace(keyword, "");
+	}
+
+	static handleCommit(message) {
+		return this.splitArr(this.removeKeyword(message, "Commit: "));
 	}
 
 	combine(commitments) {
