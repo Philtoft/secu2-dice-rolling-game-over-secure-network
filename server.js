@@ -64,6 +64,16 @@ function onClientConnection(sock) {
 			// 9) sends random value r
 			sock.write("Random: " + r);
 		}
+
+		if (data.toString().includes("Message: ")) {
+			clientMessage = data.toString().replace("Message: ", "");
+
+			console.log("====================================");
+			console.log("Client message", clientMessage);
+			console.log("====================================");
+
+			sock.write("Message: ", serverMessage);
+		}
 	});
 }
 
