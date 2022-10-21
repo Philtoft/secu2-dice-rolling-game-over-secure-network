@@ -52,3 +52,5 @@ client1.on("data", function (data) {
 function rollDice() {
 	return (Math.floor(Math.random() * 6) + 1).toString();
 }
+
+function generate(param) {}
