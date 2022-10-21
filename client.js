@@ -1,4 +1,5 @@
 const net = require("net");
+const { getGenerator } = require("./pedersen");
 require("dotenv").config();
 
 const port = 8888;
@@ -17,6 +18,14 @@ client1.connect(port, function () {
 	// client1.write(diceRoll);
 
 	client1.write("Commit: Public P: " + process.env.P);
+
+	console.log("====================================");
+	console.log("Value received: ");
+	console.log("====================================");
+
+	console.log("====================================");
+	console.log("Generator value: " + getGenerator());
+	console.log("====================================");
 });
 
 client1.on("data", function (data) {
