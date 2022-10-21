@@ -14,7 +14,19 @@ https://github.com/Azero123/simple-js-pedersen-commitment/
 2. Client: sends commit message c to server
 3. Server: receives commit message from client
 4. Server: generates random dice value
-5. Server: sends commit message c' to server
+5. Server: sends commit message c' to client
+6. Client: receives server commit
+7. Client: sends random value r to server
+8. Server: receives random value r
+9. Server: sends random value r' to client
+10. Client: receives value r' from server
+11. Client: sends message m to server
+12. Server: receives message m from client
+13. Server: sends message m' to client
+14. Client receives message m' from server
+15. Client verifies that c=C(m,r)
+16. Server verifies that c'=C(m', r')
+
 
 ## Old
 
