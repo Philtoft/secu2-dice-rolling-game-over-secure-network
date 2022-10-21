@@ -9,6 +9,8 @@ const server = net.createServer(onClientConnection);
 
 const p = process.env.P;
 const g = process.env.G;
+
+// TODO: Should generate secret
 const s = process.env.SECRET;
 const r = "ba1303c4f29bd959f585dc0dcfb3dbd0cebecd48";
 const pedersen = new Pedersen(p, g);
@@ -22,7 +24,9 @@ server.listen(port, function () {
 	console.log(`Server started on port ${port}`);
 });
 
-let clientCommit;
+let serverCommit, serverRandom, serverMessage;
+
+let clientCommit, clientRandom, clientMessage;
 
 function onClientConnection(sock) {
 	console.log("====================================");
@@ -38,22 +42,27 @@ function onClientConnection(sock) {
 		if (data.toString().includes("Commit")) {
 			clientCommit = splitArr(removeKeyword(data, "Commit: "));
 
-			// Splits commit from client
+			// 3) Receives commit from client
 			console.log("====================================");
 			console.log("3) Client Commit", clientCommit);
 			console.log("====================================");
 
-			let commit = pedersen.commit(diceRoll, s, r);
+			serverCommit = pedersen.commit(diceRoll, s, r);
 
-			sock.write("Commit: " + commit.toString());
+			// 5) Sends commit message to client
+			sock.write("Commit: " + serverCommit.toString());
 		}
 
-		if (data.toString().includes("Key")) {
+		if (data.toString().includes("Random")) {
+			// 8) Receives random msg r
+			clientRandom = data.toString().replace("Random: ", "");
+
 			console.log("====================================");
-			console.log("Key data: " + data);
+			console.log("Client Random: ", clientRandom);
 			console.log("====================================");
 
-			sock.write("Key: " + Math.floor(Math.random() * 10001));
+			// 9) sends random value r
+			sock.write("Random: " + r);
 		}
 	});
 }
