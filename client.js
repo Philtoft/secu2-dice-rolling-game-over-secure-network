@@ -1,10 +1,17 @@
 const net = require("net");
-const { getGenerator } = require("./pedersen");
+const Pedersen = require("./pedersen.js");
 require("dotenv").config();
+var pedersen = require("./pedersen.js");
 
 const port = 8888;
 
 const client1 = new net.Socket();
+
+// generates weird outout...
+let p = "925f15d93a513b441a78826069b4580e3ee37fc5";
+let g = "959144013c88c9782d5edd2d12f54885aa4ba687";
+let r = "e93c58e6f7f3f4b6f6f0e55f3a4191b87d58b7b1";
+let secret = "1184c47884aeead9816654a63d4209d6e8e906e29";
 
 /**
  * Process:
@@ -17,18 +24,13 @@ client1.connect(port, function () {
 	let diceRoll = rollDice();
 
 	// 2)
+	const pedersen = new Pedersen(p, g);
+
+	console.log("====================================");
+	console.log("1) Commit", pedersen.commit(diceRoll, secret, r).toString());
+	console.log("====================================");
 
 	// client1.write(diceRoll);
-
-	client1.write("Commit: Public P: " + process.env.P);
-
-	console.log("====================================");
-	console.log("Value received: ");
-	console.log("====================================");
-
-	console.log("====================================");
-	console.log("Generator value: " + getGenerator());
-	console.log("====================================");
 });
 
 client1.on("data", function (data) {
@@ -55,5 +57,3 @@ client1.on("data", function (data) {
 function rollDice() {
 	return (Math.floor(Math.random() * 6) + 1).toString();
 }
-
-function generate(param) {}

@@ -16,6 +16,7 @@
 		"bignumber.js": "^6.0.0",
 		"bip39": "^2.5.0",
 		"bn": "^1.0.1",
-		"elliptic": "^6.4.0"
+		"elliptic": "^6.4.0",
+		"big-integer": "^1.6.42"
 	}
 }
