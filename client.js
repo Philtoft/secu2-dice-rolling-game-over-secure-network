@@ -13,7 +13,10 @@ const client1 = new net.Socket();
  */
 
 client1.connect(port, function () {
+	// Step 1
 	let diceRoll = rollDice();
+
+	// 2)
 
 	// client1.write(diceRoll);
 

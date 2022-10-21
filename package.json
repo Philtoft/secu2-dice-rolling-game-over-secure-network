@@ -1,18 +1,21 @@
 {
-  "name": "assignment2",
-  "version": "1.0.0",
-  "description": "1. Make http connection 2. Implement pederson commitment scheme 3. Implement https",
-  "main": "client.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "dotenv": "^16.0.3",
-    "elliptic": "^6.5.4",
-    "random-prime": "^4.0.0"
-  }
+	"name": "assignment2",
+	"version": "1.0.0",
+	"description": "1. Make http connection 2. Implement pederson commitment scheme 3. Implement https",
+	"main": "client.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node server.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"dotenv": "^16.0.3",
+		"random-prime": "^4.0.0",
+		"bignumber.js": "^6.0.0",
+		"bip39": "^2.5.0",
+		"bn": "^1.0.1",
+		"elliptic": "^6.4.0"
+	}
 }

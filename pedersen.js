@@ -8,3 +8,14 @@
  * 5) Later reveals m and r?? Should only send r to reveal m? Sends r then sends m. We have TLS as encryption layer to make sure that our message cannot be read.
  * 6) Verifier is given c, m, r to check if C(m, r) = c
  */
+
+/**
+ * generate a random number for my curve
+ */
+function generateRandom() {
+	var random;
+	do {
+		random = HN.toBN(HN.fromBuffer(crypto.randomBytes(32)));
+	} while (random.gte(ec.n)); // make sure it's in the safe range
+	return random;
+}
