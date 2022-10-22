@@ -10,9 +10,9 @@ const client1 = new net.Socket();
 const p = process.env.P;
 const g = process.env.G;
 // TODO: Should generate secret
-const clientSecret = process.env.SECRET;
-const r = "e93c58e6f7f3f4b6f6f0e55f3a4191b87d58b7b1";
 const pedersen = new Pedersen(p, g);
+const clientSecret = pedersen.newSecret();
+const r = "e93c58e6f7f3f4b6f6f0e55f3a4191b87d58b7b1";
 
 /**
  * Process:
@@ -54,9 +54,9 @@ client1.on("data", function (data) {
 	if (data.toString().includes("Secret")) {
 		serverSecret = data.toString().replace("Secret: ", "");
 
-		// console.log("====================================");
-		// console.log("10) Server Secret", serverSecret);
-		// console.log("====================================");
+		console.log("====================================");
+		console.log("10) Server Secret", serverSecret);
+		console.log("====================================");
 
 		// 11) Sends message to server
 		client1.write("Message: " + clientMessage);

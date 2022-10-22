@@ -11,9 +11,9 @@ const p = process.env.P;
 const g = process.env.G;
 
 // TODO: Should generate secret
-const serverSecret = process.env.SECRET;
 const r = "ba1303c4f29bd959f585dc0dcfb3dbd0cebecd48";
 const pedersen = new Pedersen(p, g);
+const serverSecret = pedersen.newSecret();
 
 /**
  * Udfordring:
@@ -61,9 +61,9 @@ function onClientConnection(sock) {
 			// 8) Receives Secret msg r
 			clientSecret = data.toString().replace("Secret: ", "");
 
-			// console.log("====================================");
-			// console.log("8) Client Secret: ", clientSecret);
-			// console.log("====================================");
+			console.log("====================================");
+			console.log("8) Client Secret: ", clientSecret);
+			console.log("====================================");
 
 			// 9) sends Secret value s
 			sock.write("Secret: " + serverSecret);
