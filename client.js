@@ -81,14 +81,14 @@ client1.on("data", function (data) {
 
 		let verify = serverGeneratedCommit.verify(
 			serverMessage,
-			serverCommit,
+			[serverCommit],
 			serverSecret
 		);
 
-		// console.log("====================================");
-		// console.log("Server commit", serverCommit);
-		// console.log("Server verify", verify);
-		// console.log("====================================");
+		console.log("====================================");
+		console.log("Server commit", serverCommit);
+		console.log("Server verify", verify);
+		console.log("====================================");
 
 		// De bruger combine...
 	}
