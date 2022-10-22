@@ -41,17 +41,17 @@ function onClientConnection(sock) {
 			clientCommit = splitArr(removeKeyword(data, "Commit: "));
 
 			// 3) Receives commit from client
-			console.log("====================================");
-			console.log("3) Client Commit", clientCommit);
-			console.log("====================================");
+			// console.log("====================================");
+			// console.log("3) Client Commit", clientCommit);
+			// console.log("====================================");
 
 			// 4)
 			serverMessage = rollDice();
-			serverCommit = pedersen.commit(serverMessage, s, r);
+			serverCommit = pedersen.commit(serverMessage, serverSecret, r);
 
-			console.log("====================================");
-			console.log("4) Commit", serverCommit);
-			console.log("====================================");
+			// console.log("====================================");
+			// console.log("4) Commit", serverCommit.toString());
+			// console.log("====================================");
 
 			// 5) Sends commit message to client
 			sock.write("Commit: " + serverCommit.toString());
@@ -61,9 +61,9 @@ function onClientConnection(sock) {
 			// 8) Receives Secret msg r
 			clientSecret = data.toString().replace("Secret: ", "");
 
-			console.log("====================================");
-			console.log("8) Client Secret: ", clientSecret);
-			console.log("====================================");
+			// console.log("====================================");
+			// console.log("8) Client Secret: ", clientSecret);
+			// console.log("====================================");
 
 			// 9) sends Secret value s
 			sock.write("Secret: " + serverSecret);
@@ -73,9 +73,9 @@ function onClientConnection(sock) {
 		if (data.toString().includes("Message: ")) {
 			clientMessage = data.toString().replace("Message: ", "");
 
-			console.log("====================================");
-			console.log("12) Client message", clientMessage);
-			console.log("====================================");
+			// console.log("====================================");
+			// console.log("12) Client message", clientMessage);
+			// console.log("====================================");
 
 			// 13) send m' to client
 			sock.write("Message: " + serverMessage);
