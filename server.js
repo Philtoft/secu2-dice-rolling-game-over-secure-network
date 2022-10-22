@@ -81,6 +81,24 @@ function onClientConnection(sock) {
 			sock.write("Message: " + serverMessage);
 
 			// 16) Verify that c=C(m, r)
+
+			let clientGeneratedCommit = new Pedersen(p, g);
+
+			// console.log("====================================");
+			// console.log("Message", clientMessage);
+			// console.log("Commit", clientCommit);
+			// console.log("Secret", clientSecret);
+			// console.log("====================================");
+
+			let verify = clientGeneratedCommit.verify(
+				clientMessage,
+				[clientCommit],
+				clientSecret
+			);
+
+			console.log("====================================");
+			console.log("Client verify", verify);
+			console.log("====================================");
 		}
 	});
 }

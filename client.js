@@ -34,7 +34,7 @@ client1.connect(port, function () {
 	// console.log("2) Commit", clientCommit.toString());
 	// console.log("====================================");
 
-	client1.write("Commit:" + clientCommit.toString());
+	client1.write("Commit: " + clientCommit.toString());
 });
 
 client1.on("data", function (data) {
@@ -86,7 +86,6 @@ client1.on("data", function (data) {
 		);
 
 		console.log("====================================");
-		console.log("Server commit", serverCommit);
 		console.log("Server verify", verify);
 		console.log("====================================");
 
