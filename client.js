@@ -10,7 +10,7 @@ const client1 = new net.Socket();
 const p = process.env.P;
 const g = process.env.G;
 // TODO: Should generate secret
-const s = process.env.SECRET;
+const clientSecret = process.env.SECRET;
 const r = "e93c58e6f7f3f4b6f6f0e55f3a4191b87d58b7b1";
 const pedersen = new Pedersen(p, g);
 
@@ -19,9 +19,9 @@ const pedersen = new Pedersen(p, g);
  *
  * 1) Roll dice. Send commitment to server. Send key
  */
-let serverCommit, serverRandom, serverMessage;
+let serverCommit, serverSecret, serverMessage;
 
-let clientCommit, clientRandom, clientMessage;
+let clientCommit, clientMessage;
 
 client1.connect(port, function () {
 	// 1) Creates random dice roll
@@ -47,15 +47,15 @@ client1.on("data", function (data) {
 		console.log("====================================");
 
 		// 7) Sends r to server
-		client1.write("Random: " + r);
+		client1.write("Secret: " + clientSecret);
 	}
 
 	// 10 receives value r from server
-	if (data.toString().includes("Random")) {
-		serverRandom = data.toString().replace("Random: ", "");
+	if (data.toString().includes("Secret")) {
+		serverSecret = data.toString().replace("Secret: ", "");
 
 		console.log("====================================");
-		console.log("10) Server random", serverRandom);
+		console.log("10) Server Secret", serverSecret);
 		console.log("====================================");
 
 		// 11) Sends message to server
@@ -69,6 +69,12 @@ client1.on("data", function (data) {
 		console.log("====================================");
 		console.log("14) Server message", serverMessage);
 		console.log("====================================");
+
+		// 15) Verify that c = C(m', 'r)
+		let serverGeneratedCommit = new Pedersen(p, g);
+		serverGeneratedCommit.commit(serverMessage);
+
+		// De bruger combine...
 	}
 });
 

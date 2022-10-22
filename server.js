@@ -11,7 +11,7 @@ const p = process.env.P;
 const g = process.env.G;
 
 // TODO: Should generate secret
-const s = process.env.SECRET;
+const serverSecret = process.env.SECRET;
 const r = "ba1303c4f29bd959f585dc0dcfb3dbd0cebecd48";
 const pedersen = new Pedersen(p, g);
 
@@ -24,9 +24,9 @@ server.listen(port, function () {
 	console.log(`Server started on port ${port}`);
 });
 
-let serverCommit, serverRandom, serverMessage;
+let serverCommit, serverMessage;
 
-let clientCommit, clientRandom, clientMessage;
+let clientCommit, clientSecret, clientMessage;
 
 function onClientConnection(sock) {
 	console.log("====================================");
@@ -57,16 +57,16 @@ function onClientConnection(sock) {
 			sock.write("Commit: " + serverCommit.toString());
 		}
 
-		if (data.toString().includes("Random")) {
-			// 8) Receives random msg r
-			clientRandom = data.toString().replace("Random: ", "");
+		if (data.toString().includes("Secret")) {
+			// 8) Receives Secret msg r
+			clientSecret = data.toString().replace("Secret: ", "");
 
 			console.log("====================================");
-			console.log("8) Client Random: ", clientRandom);
+			console.log("8) Client Secret: ", clientSecret);
 			console.log("====================================");
 
-			// 9) sends random value r
-			sock.write("Random: " + r);
+			// 9) sends Secret value s
+			sock.write("Secret: " + serverSecret);
 		}
 
 		// 12) Receives message from client
@@ -79,6 +79,8 @@ function onClientConnection(sock) {
 
 			// 13) send m' to client
 			sock.write("Message: " + serverMessage);
+
+			// 16) Verify that c=C(m, r)
 		}
 	});
 }
