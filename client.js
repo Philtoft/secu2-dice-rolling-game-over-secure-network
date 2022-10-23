@@ -12,13 +12,7 @@ const g = process.env.G;
 // TODO: Should generate secret
 const pedersen = new Pedersen(p, g);
 const clientSecret = pedersen.newSecret();
-const r = "e93c58e6f7f3f4b6f6f0e55f3a4191b87d58b7b1";
 
-/**
- * Process:
- *
- * 1) Roll dice. Send commitment to server. Send key
- */
 let serverCommit, serverSecret, serverMessage;
 
 let clientCommit, clientMessage;
@@ -27,12 +21,7 @@ client1.connect(port, function () {
 	// 1) Creates random dice roll
 	clientMessage = rollDice();
 
-	clientCommit = pedersen.commit(clientMessage, clientSecret, r);
-
-	// 2) sends a commit message
-	// console.log("====================================");
-	// console.log("2) Commit", clientCommit.toString());
-	// console.log("====================================");
+	clientCommit = pedersen.commit(clientMessage, clientSecret);
 
 	client1.write("Commit: " + clientCommit.toString());
 });
@@ -42,10 +31,6 @@ client1.on("data", function (data) {
 	if (data.toString().includes("Commit")) {
 		serverCommit = splitArr(removeKeyword(data, "Commit: "));
 
-		// console.log("====================================");
-		// console.log("6) Server commit", serverCommit);
-		// console.log("====================================");
-
 		// 7) Sends r to server
 		client1.write("Secret: " + clientSecret);
 	}
@@ -53,10 +38,6 @@ client1.on("data", function (data) {
 	// 10 receives value r from server
 	if (data.toString().includes("Secret")) {
 		serverSecret = data.toString().replace("Secret: ", "");
-
-		console.log("====================================");
-		console.log("10) Server Secret", serverSecret);
-		console.log("====================================");
 
 		// 11) Sends message to server
 		client1.write("Message: " + clientMessage);
@@ -66,27 +47,10 @@ client1.on("data", function (data) {
 	if (data.toString().includes("Message")) {
 		serverMessage = data.toString().replace("Message: ", "");
 
-		// console.log("====================================");
-		// console.log("14) Server message", serverMessage);
-		// console.log("====================================");
-
-		// 15) Verify that c = C(m', 'r)
-		let serverGeneratedCommit = new Pedersen(p, g);
-
-		// console.log("====================================");
-		// console.log("Message", serverMessage);
-		// console.log("Commit", serverCommit);
-		// console.log("Secret", serverSecret);
-		// console.log("====================================");
-
-		let verify = serverGeneratedCommit.verify(
-			serverMessage,
-			[serverCommit],
-			serverSecret
-		);
+		let verify = pedersen.verify(serverMessage, [serverCommit], serverSecret);
 
 		console.log("====================================");
-		console.log("Server verify", verify);
+		console.log("Server verified", verify);
 		console.log("====================================");
 
 		// De bruger combine...
