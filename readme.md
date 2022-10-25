@@ -1,29 +1,13 @@
-# Steps
+# Mandatory Hand-in 2: Virtual dice
 
-1. Make http connection ✅
-2. Generate secret
-3. Implement pederson commitment scheme ✅
-4. Implement https
+## Goal of the assignment
 
-## Resources:
+To implement a distributed dice game where two nodes (Alice and Bob) capable of rolling a virtual dice. The results of the dice rolls then have to be shared between both nodes without letting one of the nodes being capable of knowing the result before sending its own result.
 
-https://github.com/Azero123/simple-js-pedersen-commitment/
+## Instructions
 
-## Entire Process
-
-1. Client: generates random dice value ✅
-2. Client: sends commit message c to server ✅
-3. Server: receives commit message from client ✅
-4. Server: generates random dice value ✅
-5. Server: sends commit message c' to client ✅
-6. Client: receives server commit ✅
-7. Client: sends random value r to server ✅
-8. Server: receives random value r ✅
-9. Server: sends secret value s to client ✅
-10. Client: receives secret value s from server ✅
-11. Client: sends message m to server ✅
-12. Server: receives message m from client ✅
-13. Server: sends message m' to client ✅
-14. Client receives message m' from server ✅
-15. Client verifies that c=C(m,r) ✅
-16. Server verifies that c'=C(m', r') ✅
+1. Have node installed
+2. run "npm install" in the terminal
+3. run "node server.js"
+4. run "node client.js"
+5. Check if the output is correct

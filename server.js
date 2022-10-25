@@ -52,7 +52,7 @@ function onClientConnection(sock) {
 			let verify = pedersen.verify(clientMessage, [clientCommit], clientSecret);
 
 			console.log("====================================");
-			console.log("Client verified", verify);
+			console.log("Alice verified", verify);
 			console.log("====================================");
 		}
 	});

@@ -31,6 +31,10 @@ client1.on("data", function (data) {
 	if (data.toString().includes("Commit")) {
 		serverCommit = splitArr(removeKeyword(data, "Commit: "));
 
+		console.log("====================================");
+		console.log("6) Bob commit", serverCommit);
+		console.log("====================================");
+
 		// 7) Sends r to server
 		client1.write("Secret: " + clientSecret);
 	}
@@ -38,6 +42,10 @@ client1.on("data", function (data) {
 	// 10 receives value r from server
 	if (data.toString().includes("Secret")) {
 		serverSecret = data.toString().replace("Secret: ", "");
+
+		console.log("====================================");
+		console.log("10) Bob Secret", serverSecret);
+		console.log("====================================");
 
 		// 11) Sends message to server
 		client1.write("Message: " + clientMessage);
@@ -47,10 +55,14 @@ client1.on("data", function (data) {
 	if (data.toString().includes("Message")) {
 		serverMessage = data.toString().replace("Message: ", "");
 
+		console.log("====================================");
+		console.log("14) Bob message", serverMessage);
+		console.log("====================================");
+
 		let verify = pedersen.verify(serverMessage, [serverCommit], serverSecret);
 
 		console.log("====================================");
-		console.log("Server verified", verify);
+		console.log("Bob verified", verify);
 		console.log("====================================");
 
 		// De bruger combine...
